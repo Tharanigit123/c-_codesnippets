@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getDefaultValue</Title>
+      <Author>Covance USER</Author>
+      <Description>Get default value of field</Description>
+      <Shortcut>getDefaultValue</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+private string getDefaultValueString(DataPoint dp)
+        {
+            string sTemp = string.Empty;
+            if (dp != null && dp.Field.DefaultValue != null)
+            {
+                sTemp = dp.Field.DefaultValue.ToString();
+                if (sTemp != string.Empty && sTemp.EndsWith("|"))
+                    sTemp = Regex.Replace(sTemp, @"\|$", "", RegexOptions.Singleline);
+                return sTemp;
+            }
+            return sTemp;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

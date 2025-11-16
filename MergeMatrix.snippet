@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>MergeMatrix</Title>
+      <Author>Covance USER</Author>
+      <Description>Merge and UnMerge the matrix based on the conditions</Description>
+      <Shortcut>MergeMatrix</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ private void MergeMatrix(string matrixOid, bool isMerge, Subject subject)
+    {
+        Matrix m = Matrix.FetchByOID(matrixOid, subject.CRFVersion.ID);
+        if (m != null)
+        {
+            if (isMerge) subject.MergeMatrix(m);
+            else subject.UnMergeMatrix(m);
+        }
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

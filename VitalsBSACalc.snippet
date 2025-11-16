@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>VitalsBSACalc</Title>
+      <Author>Covance USER</Author>
+      <Description>Vital BSA calculation</Description>
+      <Shortcut>VitalsBSACalc</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ #region VitalsBSACalc
+public class VitalsBSACalc
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+         * CF Name: VitalsBSACalc
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: BSA calculation based on the height and weight of the subject at the respective Visit.**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpSTDPoint = afp.ActionDataPoint;
+
+        // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+        const string HEIGHT_FIELDOID = "HEIGHT", BSA_FIELDOID = "BSA";
+        // -------------------------------------------------------- //
+        if (dpSTDPoint.ChangeCount > 0)
+        {
+            DataPoint dpHEIGHT = dpSTDPoint.Record.DataPoints.FindByFieldOID(HEIGHT_FIELDOID);
+            DataPoint dpBSA = dpSTDPoint.Record.DataPoints.FindByFieldOID(BSA_FIELDOID);
+            if (dpHEIGHT != null && dpBSA != null)
+            {
+                if (!CustomFunction.DataPointIsEmpty(dpHEIGHT) && !CustomFunction.DataPointIsEmpty(dpSTDPoint))
+                {
+                    double heightval = getDoubleValue(dpHEIGHT);
+                    double weightval = getDoubleValue(dpSTDPoint);
+
+                    //double calBSA = 0.20247 * Math.Pow(heightval, 0.725) * Math.Pow(weightval, 0.425);
+                    double calBSA = 0.007184 * Math.Pow(heightval, 0.725) * Math.Pow(weightval, 0.425);
+                    Enter(dpBSA, Convert.ToString(Math.Round(calBSA, 3)));
+                }
+                else
+                    Enter(dpBSA, string.Empty);
+            }
+
+        }
+        return null;
+    }
+    private double getDoubleValue(DataPoint dp)
+    {
+        if (Number.IsValidNumber(dp.Data.ToString()))
+            return Convert.ToDouble(dp.Data.ToString());
+        return double.MinValue;
+    }
+
+    private void Enter(DataPoint dp, string data)
+    {
+        if (dp != null && dp.Active && dp.LockStatus != LockStatusEnum.Locked && string.Compare(dp.Data.ToString(), data, true) != 0)
+            dp.Enter(data, string.Empty, 0);
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

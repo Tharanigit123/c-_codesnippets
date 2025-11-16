@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>indKeyYes</Title>
+      <Author>Covance USER</Author>
+      <Description>IndKey to check data is not entered if Quetion is Yes</Description>
+      <Shortcut>indKeyYes</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+#region STUDYCODE_CF_Form_FIELD_YES
+public class STUDYCODE_CF_Form_FIELD_YES
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+          * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+          * CF Name: CF_Form_FIELD_YES
+          * Edit Check(s): CF_Form_FIELD_YES_01, CF_Form_FIELD_YES_02
+          * Last Modified: Not Applicable
+          * Reason Modified: Not Applicable
+          * Description: **/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpSTDPoint = afp.ActionDataPoint;
+
+        // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+        const string YES = "1";
+        // -------------------------------------------------------- //
+
+        // ---- OTHER CONSTANTS --------- //
+        const string QUERY_TEXT = @"Query Text";
+        const int MARKING_GROUP_ID = 1;
+        const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+        // -------------------------------------------------------- //
+
+        if (dpSTDPoint.ChangeCount > 0)
+        {
+            bool openQuery = false;
+            if (string.Compare(dpSTDPoint.Data.ToString(), YES) == 0)
+            {
+                openQuery = true;
+                Records rcdPCColls = (Records)dpSTDPoint.Record.DataPage.Records;
+                for (int i = 0; i < rcdPCColls.Count; i++)
+                {
+                    Record rcd = (Record)rcdPCColls[i];
+                    if (rcd == null || !rcd.Active || rcd.RecordPosition == 0) continue;
+                    foreach (DataPoint dp in rcd.DataPoints)
+                    {
+                        if ((dp.Field.ControlType.ToString() != "CheckBox" && dp.EntryStatus.ToString() != "NonConformant" && dp.Data != string.Empty) || (dp.Field.ControlType.ToString() == "CheckBox" && dp.Data == "1"))
+                        {
+                            openQuery = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            CustomFunction.PerformQueryAction(QUERY_TEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dpSTDPoint, openQuery, afp.CheckID, afp.CheckHash);
+        }
+        return null;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

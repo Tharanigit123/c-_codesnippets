@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getAnalyteLowRange</Title>
+      <Author>Covance USER</Author>
+      <Description>Get analyte Low range</Description>
+      <Shortcut>getAnalyteLowRange</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+  private decimal getAnalyteLowRange(DataPoint dpAnalyte)
+    {
+        if (!CustomFunction.DataPointIsEmpty(dpAnalyte) && dpAnalyte.AnalyteRange != null && dpAnalyte.AnalyteRange.LowRange != null)
+        {
+            double dbAnalyteValue = dpAnalyte.AnalyteRange.LowRange;
+            if (dbAnalyteValue > 0D && Number.IsValidNumber(dbAnalyteValue))
+                return Convert.ToDecimal(dbAnalyteValue);
+        }
+        return decimal.MinValue;
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

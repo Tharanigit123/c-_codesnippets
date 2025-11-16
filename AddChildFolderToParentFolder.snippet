@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>AddChildFolderToParentFolder</Title>
+      <Author>Covance USER</Author>
+      <Description>Add child folder to parent folder</Description>
+      <Shortcut>AddChildFolderToParentFolder</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ Instance instParent = current_subject.Instances.FindByFolderOID("ParentFolderOID");
+        if (instParent != null)
+        {
+            Instance instChild = instParent.Instances.FindByFolderOID("ChildFolderOID");
+            if (instChild == null)
+            {
+                Folder fd = (Folder)sub.CRFVersion.Folders.FindByOID("ChildFolderOID");
+                if (fd != null)
+                    instParent.AddInstance(fd, dp.Record.SubjectMatrixID);
+            }
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>DuplicateRecords</Title>
+      <Author>Covance USER</Author>
+      <Description>Check the duplicate records in the form</Description>
+      <Shortcut>DuplicateRecords</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[#region STUDYCODE_CF_FORMOID_FIELDOID_DUPLICATE
+public class STUDYCODE_CF_FORMOID_FIELDOID_DUPLICATE
+{
+    public object Eval(object ThisObject)
+    {
+   /** HEADER INFORMATION:**************************
+         * CF Name: CF_FORMOID_FIELDOID_DUPLICATE
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: Check for duplicate records defined as two records in the form**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpSTDPoint = afp.ActionDataPoint;
+
+        // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+        const string TEXT_FIELDOID = "FIELDOID", DATE_FIELDOID = "DATE_FIELDOID", TEXT_FIELDOID = "FIELDOID";
+        // -------------------------------------------------------- //
+
+        // ---- OTHER CONSTANTS --------- //
+        const string QUERY_TEXT = "Query Text";
+        const int MARKING_GROUP_ID = 1;
+        const bool ANSWER_ON_CHANGE = true, CLOSE_ON_CHANGE = true;
+        // ------------------------------//		
+
+        if (dpSTDPoint.ChangeCount > 0)
+        {
+            Records rcs_Form = dpSTDPoint.Record.DataPage.Records;
+            System.Collections.Generic.List<string> lstUniquIDs = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < rcs_Form.Count; i++)
+            {
+                bool openQuery = false;
+                Record rcd = (Record)rcs_Form[i];
+                if (rcd == null || !rcd.Active || rcd.RecordPosition == 0) continue;
+
+                DataPoint dpQryPoint = rcd.DataPoints.FindByFieldOID(TEXT_FIELDOID);
+                if (dpQryPoint != null)
+                {
+                    string sField1 = getStringValue(dpQryPoint);
+                    string sField2 = getStringValue(rcd.DataPoints.FindByFieldOID(TEXT_FIELDOID));
+                    string sField3 = GetValidDatapointDate(rcd.DataPoints.FindByFieldOID(DATE_FIELDOID));
+
+                    if (sField1 != string.Empty && sField2 != string.Empty && sField3 != string.Empty)
+                    {
+                        string strCONCAT = sField1 + "|" + sField2 + "|" + sField3;
+                        if (lstUniquIDs.Contains(strCONCAT))
+                            openQuery = true;
+                        else
+                            lstUniquIDs.Add(strCONCAT);
+                    }
+                    CustomFunction.PerformQueryAction(QUERY_TEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dpQryPoint, openQuery, afp.CheckID, afp.CheckHash);
+                }
+            }
+        }
+        return null;
+    }
+    private bool IsValidDataPointValidation(DataPoint dp)
+    {
+        if (dp == null || !dp.Active || dp.EntryStatus == EntryStatusEnum.NoData || dp.EntryStatus == EntryStatusEnum.NonConformant || dp.EntryStatus == EntryStatusEnum.EnteredEmpty || dp.EntryStatus == EntryStatusEnum.PartialComplete)
+            return false;
+        return true;
+    }
+    private string getStringValue(DataPoint dp)
+    {
+        if (IsValidDataPointValidation(dp))
+            return (string)dp.Data.Trim().ToString();
+        return string.Empty;
+    }
+    public string GetValidDatapointDate(DataPoint dpDATE)
+    {
+        if (IsValidDataPointValidation(dpDATE) && dpDATE.StandardValue() is DateTime)
+        {
+            Object obDt = dpDATE.StandardValue();
+            if (obDt is DateTime)
+                return dpDATE.Data.Trim().ToString();
+            return string.Empty;
+        }
+        return string.Empty;
+}
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

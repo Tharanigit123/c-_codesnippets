@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getRoundValue</Title>
+      <Author>Covance USER</Author>
+      <Description>Retrun rounding half up value. (double dVALUE: Value for rounding half up, int iPLACE: Decimal place for for rounding half up)</Description>
+      <Shortcut>gRound</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private double ToHalfAdjust(double dVALUE, int iPLACE)
+        {
+            double n = dVALUE * Math.Pow(10, iPLACE);
+            n = Math.Sign(n) * Math.Abs(Math.Floor(n + .5));
+
+            return n / Math.Pow(10, iPLACE);
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

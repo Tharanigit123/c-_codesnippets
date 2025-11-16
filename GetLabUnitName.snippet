@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GetLabUnitName</Title>
+      <Author>Covance USER</Author>
+      <Description>Get Lab Unit name from Datapoint</Description>
+      <Shortcut>GetLabUnitName</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ private string GetLabUnitName(DataPoint dp)
+    {
+        if (dp.Record.DataPage.LabID != 0 && dp.AnalyteRange != null && dp.AnalyteRange.LabUnit != null)
+            return dp.AnalyteRange.LabUnit.Name;
+        return string.Empty;
+    }]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

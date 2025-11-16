@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>SubjectIdDuplicate</Title>
+      <Author>Covance USER</Author>
+      <Description>Duplicate subject identifier</Description>
+      <Shortcut>SubjectIdDuplicate</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+#region STUDYCODE_CF_SUBJECTID_DUPLICATE
+public class STUDYCODE_CF_SUBJECTID_DUPLICATE
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * CF Name: CF_SUBJECTID_DUPLICATE
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description:Duplicate subject identifier **/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dptStd = afp.ActionDataPoint;
+        Subject subject = dptStd.Record.Subject;
+
+        // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+        const string PRIMARY_FIELDOID = " ";
+        // -------------------------------------------------------- //
+
+        //--------OTHER CONSTANTS------------------------------------//
+        const string QUERY_TEXT = @" ";
+        const int MARKING_GROUP_ID = 1;
+        const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+        // -------------------------------------------------------- //
+
+        Subjects allSubjects = dptStd.Record.Subject.StudySite.Subjects;
+        bool doQuery = false;
+        string sSUBNAME = dptStd.Data.ToString();
+        if (sSUBNAME != string.Empty)
+        {
+            for (int i = 0; i < allSubjects.Count; i++)
+            {
+                Subject subj = allSubjects[i];
+                if (subj != null && subj.Active && subj.ID != subject.ID)
+                {
+                    DataPage dpg = subj.PrimaryDataPage;
+                    if (dpg != null && dpg.Active)
+                    {
+                        if (string.Compare(getStringValue(dpg.MasterRecord.DataPoints.FindByFieldOID(PRIMARY_FIELDOID)), sSUBNAME) == 0)
+                        {
+                            doQuery = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (doQuery)
+            dptStd.SetNonConformant(true);
+        else
+            dptStd.SetNonConformant(false);
+        CustomFunction.PerformQueryAction(QUERY_TEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dptStd, doQuery, afp.CheckID, afp.CheckHash);
+        return null;
+    }
+    private string getStringValue(DataPoint dp)
+    {
+        if (!CustomFunction.DataPointIsEmpty(dp))
+            return dp.Data.ToString();
+        return string.Empty;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

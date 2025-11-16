@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GetAllLiveStudies</Title>
+      <Author>Covance USER</Author>
+      <Description>Get all live studies</Description>
+      <Shortcut>GetAllLiveStudies</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+#region CF_GetAllLiveStudies
+public class CF_GetAllLiveStudies
+{
+    public object Eval(object ThisObject)
+    {
+         /** HEADER INFORMATION:**************************
+         * CF Name: CF_GetAllLiveStudies
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: <Specify the Description here>**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpSTDPoint = afp.ActionDataPoint;
+        
+        if (dpSTDPoint.ChangeCount > 0)
+        {
+            if (dpSTDPoint.Interaction != null)
+            {
+                Studies stds = Studies.GetAllStudiesOrderByProjectName(dpSTDPoint.Interaction, true);
+                if (stds.Count > 0)
+                {
+                    for (int i = 0; i < stds.Count; i++)
+                    {
+                        Study std = stds[i];
+
+                        if (std.NumberOfSubjects > 0)
+                        {
+                            if (std != null)
+                            {
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

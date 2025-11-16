@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>General Eval Method</Title>
+      <Author>Covance User</Author>
+      <Description>Structure for the CF Programming with Header Informtaion</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>gEval</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[#region BAYER_STUDYCODE_CHECKPURPOSE
+    public class STUDYCODE_STUDYCODE_CHECKPURPOSE
+    {
+        public object Eval(object ThisObject)
+        {
+            /** HEADER INFORMATION:**************************
+             * CF Name: CF_Name
+             * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+             * Last Modified: Not Applicable
+             * Reason Modified: Not Applicable
+             * Description: <Specify the Description here>**/
+
+            ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+            DataPoint dpSTDPoint = afp.ActionDataPoint;
+            Subject current_subject = dpSTDPoint.Record.Subject;
+
+            // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+            const string FIELDOID = "";
+            // -------------------------------------------------------- //
+
+            // ---- OTHER CONSTANTS --------- //
+            const string QUERY_TEXT = @"<Query Message>";
+            const int SITE_BY_SYSTEM = 1;
+            const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+            bool openQuery = false;  
+            // ------------------------------//		
+
+            if (dpSTDPoint.ChangeCount > 0)
+            {
+
+                CustomFunction.PerformQueryAction(QUERY_TEXT, SITE_BY_SYSTEM, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dpQuery, openQuery, afp.CheckID, afp.CheckHash);
+                  
+            }
+            return null;
+        }
+       
+    }
+    #endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

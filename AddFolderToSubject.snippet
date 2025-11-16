@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>AddFolderToSubject</Title>
+      <Author>Covance USER</Author>
+      <Description>Add folder to subject</Description>
+      <Shortcut>AddFolderToSubject</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+  Instance instVrfy = dpSTDPoint.Record.DataPage.Instance;
+            if (instVrfy == null || !instVrfy.Active) return null;
+
+            Folder fld = Folder.FetchByOID(FOLDEROID, current_subject.CRFVersion.ID);
+            if (fld != null && current_subject.Instances.FindByFolderOID(fld.OID) == null)
+                current_subject.AddInstance(current_subject, fld, instVrfy.SubjectMatrixID);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

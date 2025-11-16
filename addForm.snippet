@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>isMergeOrUnmergeForm</Title>
+      <Author>Covance USER</Author>
+      <Description>Adding/Inactivating Form based on the condition for Subject Visit Folder</Description>
+      <Shortcut>addForm</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private void AddForm(Instance inst, bool IsAdd, string sFORMOID)
+        {
+            if (IsAdd && inst != null)
+            {
+                DataPage newPage = inst.DataPages.FindByFormOID(sFORMOID);
+                if (newPage == null)
+                {
+                    Form newForm = Form.FetchByOID(sFORMOID, inst.Subject.CRFVersion.ID);
+                    newPage = new DataPage(inst, newForm, inst.SubjectMatrixID);
+                    inst.DataPages.Add(newPage);
+                }
+                else if (!newPage.Active)
+                    newPage.Active = true;
+            }
+            else if (inst != null)
+            {
+                DataPage newPage = inst.DataPages.FindByFormOID(sFORMOID);
+                if (newPage != null && !newPage.IsBitSet(Status.IsTouched)) newPage.Active = false;
+            }
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

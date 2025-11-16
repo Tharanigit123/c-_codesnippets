@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getDPDate</Title>
+      <Author>Covance USER</Author>
+      <Description>Method returns Valid Date from Submitted dataPoint(Excluding Partial Date)</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>getDate</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[//get Valid DateTime from DataPoint.
+        public DateTime GetValidDatapointDate(DataPoint dpDATE)
+        {
+            if (IsValidDataPointValidation(dpDATE) && dpDATE.StandardValue() is DateTime && !Regex.IsMatch(dpDATE.Data.ToString(), "(^(UN )|( UNK ))", RegexOptions.Singleline))
+            {
+                Object obDt = dpDATE.StandardValue();
+                if (obDt is DateTime)
+                    return (DateTime)obDt;
+                return DateTime.MinValue;
+            }
+            return DateTime.MinValue;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

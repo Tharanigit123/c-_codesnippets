@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GetEmailBasedOnRoles</Title>
+      <Author>Covance USER</Author>
+      <Description>Get email based on roles</Description>
+      <Shortcut>GetEmailBasedOnRoles</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+string GetEmailBasedOnRoles(Subject subject, string roleName)
+    {
+        string toAddress = string.Empty;
+        Users usersCRC = new Users();
+        Roles roles = Roles.GetAllActiveRoles();
+
+        for (int l = 0; l < roles.Count; l++)
+        {
+            if (string.Compare(roles[l].RoleName.Trim(), roleName, true) == 0)
+            {
+                usersCRC = roles[l].Users;
+                break;
+            }
+        }
+        for (int m = 0; m < usersCRC.Count; m++)
+        {
+            if (usersCRC[m].Email.Trim().Length > 0 && usersCRC[m].IsUserAssociatedWithStudySite((subject.StudySite)))
+            {
+                if (usersCRC[m].Email.EndsWith(";") || usersCRC[m].Email.EndsWith(","))
+                    toAddress += usersCRC[m].Email;
+                else
+                    toAddress += usersCRC[m].Email + ";";
+            }
+        }
+        return toAddress;
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

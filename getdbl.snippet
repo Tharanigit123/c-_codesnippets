@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getDoubleValue</Title>
+      <Author>Covance USER</Author>
+      <Description>Method returns Double Value from the submitted DataPoint</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>gdbl</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private double getDoubleValue(DataPoint dp)
+        {
+            if (IsValidDataPointValidation(dp) && Number.IsValidNumber(dp.Data.ToString()))
+                return Convert.ToDouble(dp.Data.ToString());
+            return double.MinValue;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

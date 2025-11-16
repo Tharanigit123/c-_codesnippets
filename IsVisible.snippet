@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GenericList</Title>
+      <Author>Covance USER</Author>
+      <Description>Datapoint Visible Snippet</Description>
+      <Shortcut>IsVisible</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[public void MakeVisible(DataPoint dp, bool Valid)
+    {
+        if (dp != null)
+            dp.IsVisible = Valid;
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

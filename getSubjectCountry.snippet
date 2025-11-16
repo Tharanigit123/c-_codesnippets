@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getSubjectCountry</Title>
+      <Author>Covance USER</Author>
+      <Description>Get subject country</Description>
+      <Shortcut>getSubjectCountry</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+string strSubjectCountry = Current_Subject.StudySite.Site.Country != string.Empty ? Current_Subject.StudySite.Site.Country : string.Empty;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

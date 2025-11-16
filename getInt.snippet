@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getIntegerValue</Title>
+      <Author>Covance USER</Author>
+      <Description>This Method returns Integer value from the submitted DataPoint.</Description>
+      <Shortcut>gInt</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private int getIntegerValue(DataPoint dp)
+        {
+            if (IsValidDataPointValidation(dp) && Number.IsValidInteger(dp.Data.ToString()))
+                return Convert.ToInt32(dp.Data.ToString());
+            return int.MinValue;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

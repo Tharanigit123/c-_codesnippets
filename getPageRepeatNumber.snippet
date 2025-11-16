@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getPageRepeatNumber</Title>
+      <Author>Covance USER</Author>
+      <Description>Get data page repeat number</Description>
+      <Shortcut>getPageRepeatNumber</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ private int getPageRepeatNumber(DataPage dpg)
+    {
+         if (dpg != null && dpg.Active)
+        {
+            int intPageRepeatNumber = Convert.ToInt32(dpg.PageRepeatNumber.ToString());
+            if (intPageRepeatNumber > 0)
+                return intPageRepeatNumber;
+        }
+        return 0;
+        return 0;
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

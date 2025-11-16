@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>miltEditRetrievalLogic</Title>
+      <Author>Covance USER</Author>
+      <Description>This structure is based on edit check calling point retrieves the standard dataPoint collection</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>mEdit</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[DataPoints dpPoints = new DataPoints();
+            if (string.Compare(<STDPoint>.Field.OID.ToString(), <FIELDOID>) == 0)
+                dpPoints.Add(<STDPoint>);
+            else
+                dpPoints = CustomFunction.FetchAllDataPointsForOIDPath(<FIELDOID>, <FORMOID>, <FOLDEROID>, <current_subject>);
+
+            if (dpPoints.Count > 0)
+            {
+
+            }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

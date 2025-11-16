@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>ChronologicalOrderVisit</Title>
+      <Author>Covance USER</Author>
+      <Description>Visit date in chronological order</Description>
+      <Shortcut>ChronologicalOrderVisit</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[#region STUDYCODE_CF_FORMOID_FIELDOID_CHRONOLOGICAL
+public class STUDYCODE_CF_FORMOID_FIELDOID_CHRONOLOGICAL
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+         * CF Name: CF_FORMOID_FIELDOID_CHRONOLOGICAL
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: VISDAT in Visit X must be less than VISDAT in Visit X+1**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        Subject current_Subject = afp.ActionDataPoint.Record.Subject;
+
+        // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+        const string VISDAT_FIELDOID = " ", VISDT_FORMOID = " ";
+        // -------------------------------------------------------- //
+
+        // ---- OTHER CONSTANTS --------- //
+        const string QUERY_TEXT = @"Query Text";
+        const int MARKING_GROUP_ID = 1;
+        const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+        // ------------------------------//        
+
+        DataPoints dptsVS = getSortedDataPointsOnOrdinal(CustomFunction.FetchAllDataPointsForOIDPath(VISDAT_FIELDOID, VISDT_FORMOID, null, current_Subject));
+        if (dptsVS.Count > 0)
+        {
+            for (int i = dptsVS.Count - 1; i >= 0; i--)
+            {
+                bool openQuery = false;
+                DataPoint dptQueryPoint = dptsVS[i];
+                if (dptQueryPoint != null)
+                {
+                    DateTime dtCurrent = GetValidDatapointDate(dptQueryPoint);
+                    if (dtCurrent != DateTime.MinValue && (i - 1) >= 0)
+                    {
+                        for (int jj = i - 1; jj >= 0; jj--)
+                        {
+                            DataPoint dpPoint = (DataPoint)dptsVS[jj];
+                            if (dpPoint == null || dpPoint.ID == dptQueryPoint.ID) continue;
+                            DateTime dtPrev = GetValidDatapointDate(dpPoint);
+                            if (dtPrev != DateTime.MinValue)
+                            {
+                                openQuery = DateTime.Compare(dtPrev, dtCurrent) >= 0;
+                                break;
+                            }
+                        }
+                    }
+                    CustomFunction.PerformQueryAction(QUERY_TEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dptQueryPoint, openQuery, afp.CheckID, afp.CheckHash);
+                }
+            }
+        }
+        return null;
+    }
+    private DataPoints getSortedDataPointsOnOrdinal(DataPoints dpsPoints)
+    {
+        ArrayList arydpColls = new ArrayList();
+        DataPoints dptColls = new DataPoints();
+        if (dpsPoints.Count > 0)
+        {
+            foreach (DataPoint dpPoint in dpsPoints)
+            {
+                Instance inst = dpPoint.Record.DataPage.Instance;
+                if (inst == null || dpPoint == null || !dpPoint.Active || dpPoint.ChangeCount == 0) continue;
+                arydpColls.Add((DataPoint)dpPoint);
+            }
+        }
+        if (arydpColls.Count > 1) arydpColls.Sort(new MyDataPointComparer());
+        foreach (DataPoint dpPoint in arydpColls) dptColls.Add(dpPoint);
+        return dptColls;
+    }
+    private class MyDataPointComparer : System.Collections.IComparer
+    {
+        int System.Collections.IComparer.Compare(object x, object y)
+        {
+            int dp1 = ((DataPoint)x).Record.DataPage.Instance.Folder.Ordinal;
+            int dp2 = ((DataPoint)y).Record.DataPage.Instance.Folder.Ordinal;
+            return dp1.CompareTo(dp2);
+        }
+    }
+    private bool IsValidDataPointValidation(DataPoint dp)
+    {
+        if (dp == null || !dp.Active || dp.EntryStatus == EntryStatusEnum.NoData || dp.EntryStatus == EntryStatusEnum.NonConformant || dp.EntryStatus == EntryStatusEnum.EnteredEmpty || dp.EntryStatus == EntryStatusEnum.PartialComplete)
+            return false;
+        return true;
+    }
+    public DateTime GetValidDatapointDate(DataPoint dpDATE)
+    {
+        if (IsValidDataPointValidation(dpDATE) && dpDATE.StandardValue() is DateTime)
+        {
+            Object obDt = dpDATE.StandardValue();
+            if (obDt is DateTime)
+                return (DateTime)obDt;
+            return (DateTime)DateTime.MinValue;
+        }
+        return DateTime.MinValue;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

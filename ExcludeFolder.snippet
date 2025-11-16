@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>ExcludeFolder</Title>
+      <Author>Covance USER</Author>
+      <Description>Call this CF in edit check step to exclude perticular folder</Description>
+      <Shortcut>ExcludeFolder</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+ #region STUDYCODE_CF_Exclude_Folder
+public class STUDYCODE_CF_Exclude_Folder
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+         * CF Name: CF_Exclude_Folder
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: <Specify the Description here>**/
+
+        DataPoint dpSTDPoint = (DataPoint)ThisObject;
+        if (dpSTDPoint.Record.Instance.Folder.OID == "FolderOID")
+            return false;
+        return true;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

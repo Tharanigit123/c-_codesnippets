@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>findFirstDateTime</Title>
+      <Author>Covance USER</Author>
+      <Description>Method Finds First DateTime form the Collection of DataPoints (Only Valid DateTime) parameters DataPoints Collection and TimePoint Variable OID</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>fstDateTime</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[//-----FindEarliestDate method from DatePoint and TimePoint.
+        public DateTime FindEarliestDate(DataPoints datapoints, string strTMPoint)
+        {
+            DateTime dtFIRSTDT = DateTime.MinValue;
+            for (int i = 0; i < datapoints.Count; i++)
+            {
+                DataPoint dpDATE = (DataPoint)datapoints[i];
+                if (dpDATE == null || !dpDATE.Active) continue;
+                DateTime dtSTARTDT = getValidDatapointDate(dpDATE, dpDATE.Record.DataPoints.FindByFieldOID(strTMPoint));
+                if (dtSTARTDT != DateTime.MinValue)
+                {
+                    if (dtFIRSTDT == DateTime.MinValue || (dtFIRSTDT != DateTime.MinValue && DateTime.Compare((DateTime)dtSTARTDT, (DateTime)dtFIRSTDT) < 0))
+                        dtFIRSTDT = dtSTARTDT;
+                }
+            }
+            return dtFIRSTDT;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

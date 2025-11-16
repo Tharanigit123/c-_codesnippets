@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>isDataPageSubmitted</Title>
+      <Author>Covance USER</Author>
+      <Description>Return True (DataPage is touched), Return False (DataPage is Not touched)</Description>
+      <Shortcut>isPgTouch</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private bool isPageTouched(string sFORMOID, string sFOLDEROID, Subject cur_sub)
+        {
+            Instance ins = cur_sub.Instances.FindByFolderOID(sFOLDEROID);
+            if (ins != null && ins.Active)
+            {
+                DataPage dpg = ins.DataPages.FindByFormOID(sFORMOID);
+                return (dpg != null && dpg.Active && (dpg.EntryStatus != EntryStatusEnum.NoData || dpg.IsBitSet(Status.IsTouched)));
+            }
+            return false;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

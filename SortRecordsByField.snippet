@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>SortRecordsByField</Title>
+      <Author>Covance USER</Author>
+      <Description>Sort the records by field data</Description>
+      <Shortcut>SortRecordsByField</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+Records rcds = dpAction.Record.DataPage.Records;
+            DataPoint dpDate = dpAction.Record.DataPoints.FindByFieldOID(EXSTDAT_FIELDOID);
+            if (dpDate != null)
+                rcds = rcds.Sort(dpDate.Field, SortDirection.Ascending);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

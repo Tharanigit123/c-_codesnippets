@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GetAuditDatetime</Title>
+      <Author>Covance USER</Author>
+      <Description>Get audit date and time for user entered value</Description>
+      <Shortcut>GetAuditDatetime</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+  private DateTime GetAuditDatetime(DataPoint dp)
+        {
+            if (dp != null)
+            {
+                Audits Objadt = Audits.Load(dp);
+                for (int i = 0; i < Objadt.Count; i++)
+                {
+                    Audit objAudit = Objadt[i];
+                    if (objAudit.SubCategory == AuditSubCategory.Entered || objAudit.SubCategory == AuditSubCategory.EnteredWithChangeCode || objAudit.SubCategory == AuditSubCategory.EnteredEmpty || objAudit.SubCategory == AuditSubCategory.EnteredEmptyWithChangeCode)
+                    {
+                        string strReadable = objAudit.Readable.ToString();
+                        if (strReadable != string.Empty && strReadable.Contains("Yes"))
+                          return objAudit.AuditTime;
+                    }
+                }
+            }
+            return DateTime.MinValue;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

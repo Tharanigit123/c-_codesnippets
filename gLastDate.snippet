@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getLatestDate</Title>
+      <Author>Covance USER</Author>
+      <Description>This Method returns Last/Latest datetime from the collections.</Description>
+      <Shortcut>gLastDate</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[//-----FindLatestDate method
+        public DateTime FindLatestDate(DataPoints dptPoints)
+        {
+            DateTime dtLASTDT = DateTime.MinValue;
+            for (int i = 0; i < dptPoints.Count; i++)
+            {
+                DateTime dtDATE = GetValidDatapointDate((DataPoint)dptPoints[i]);
+                if (dtDATE != DateTime.MinValue)
+                {
+                    if (dtLASTDT == DateTime.MinValue || (dtLASTDT != DateTime.MinValue && DateTime.Compare((DateTime)dtDATE, (DateTime)dtLASTDT) > 0))
+                        dtLASTDT = dtDATE;
+                }
+            }
+            return dtLASTDT;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

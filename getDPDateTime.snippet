@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getDPDateTime</Title>
+      <Author>Covance USER</Author>
+      <Description>Method Returns Date and Time from the two Different DataPoints (Only Valid Date and Time)</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>getDT</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[//get Valid DateTime from two DataPoints (DatePoint and TimePoint).
+        public DateTime getValidDatapointDate(DataPoint dpDATE, DataPoint dpTM)
+        {
+            DateTime myDateTime = DateTime.MinValue;
+            if (IsValidDataPointValidation(dpDATE) && dpDATE.StandardValue() is DateTime && !Regex.IsMatch(dpDATE.Data.ToString(), "(^(UN )|( UNK ))", RegexOptions.Singleline))
+            {
+                Object obDt = dpDATE.StandardValue();
+                if (obDt is DateTime && dpTM != null && dpTM.StandardValue() is TimeSpan)
+                {
+                    myDateTime = (DateTime)obDt;
+                    Object obTM = dpTM.StandardValue();
+                    if (obTM is TimeSpan)
+                        myDateTime = myDateTime.Add((TimeSpan)obTM);
+                }
+            }
+            return myDateTime;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

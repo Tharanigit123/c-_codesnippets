@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getValidDP</Title>
+      <Author>Covance USER</Author>
+      <Description>Fetching Valid Datapoint from the FetchAllDataPointsForOIDPath method</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>fetchall</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private DataPoint getValidDataPoint(string FIELDOID, string FORMOID, string FOLDEROID, Subject curr_subject)
+        {
+            DataPoints dptsPoints = CustomFunction.FetchAllDataPointsForOIDPath(FIELDOID, FORMOID, FOLDEROID, curr_subject);
+            if (dptsPoints.Count > 0)
+            {
+                for (int i = 0; i < dptsPoints.Count; i++)
+                {
+                    if (dptsPoints[i] != null && dptsPoints[i].Active)
+                        return (DataPoint)dptsPoints[i];
+                }
+            }
+            return (DataPoint)null;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

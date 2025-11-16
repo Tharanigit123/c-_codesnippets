@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GetLabName</Title>
+      <Author>Covance USER</Author>
+      <Description>Get the Lab Names from perticular site</Description>
+      <Shortcut>GetLabName</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+#region STUDYCODE_CF_GetLabNames
+public class STUDYCODE_CF_GetLabNames
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+         * CF Name: CF_GetLabNames
+         * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+         * Last Modified: Not Applicable
+         * Reason Modified: Not Applicable
+         * Description: <Specify the Description here>**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpSTDPoint = afp.ActionDataPoint;
+
+        if (dpSTDPoint.ChangeCount > 0)
+        {
+            StudySite stSite = dpSTDPoint.Record.Subject.StudySite;
+            if (stSite != null && stSite.StudySiteNumber != null)
+            {
+                Medidata.Core.Objects.Labs.Labs labs = Medidata.Core.Objects.Labs.Labs.LoadByStudySite(dpSTDPoint.Interaction, stSite.ID);
+                for (int i = 0; i < labs.Count; i++)
+                {
+                   
+                }
+            }
+        }
+        return null;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

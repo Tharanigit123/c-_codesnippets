@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>ClinicalSignificanceCommentIsMissing</Title>
+      <Author>Covance USER</Author>
+      <Description>Clinical Significance = 'Clinical Significance' and Comments is Null</Description>
+      <Shortcut>ClinicalSignificanceCommentIsMissing</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$">
+        <![CDATA[
+#region STUDYCODE_CF_LABFORM_ClinicalSignificanceCommentIsMissing
+public class STUDYCODE_CF_LABFORM_ClinicalSignificanceCommentIsMissing
+{
+    public object Eval(object ThisObject)
+    {
+        /** HEADER INFORMATION:**************************
+        * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+        * CF Name: CF_LABFORM_ClinicalSignificanceCommentIsMissing
+        * Edit Check(s): CF_LABFORM_ClinicalSignificanceCommentIsMissing
+        * Last Modified: Not Applicable
+        * Reason Modified: Not Applicable
+        * Description:Clinical Significance = 'Clinical Significance' and Comments is Null.**/
+
+        ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+        DataPoint dpAction = afp.ActionDataPoint;
+        Subject current_subject = dpAction.Record.Subject;
+
+        // ---- OTHER CONSTANTS --------- //
+        const string QUERY_TEXT = @"Value is 'Clinically Significant' but comment is missing. Please reconcile.";
+        const int SITE_BY_SYSTEM = 1;
+        const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+	const string CODE="1";
+        System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> lstAnalyte = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>
+        {
+            {
+                "LABFORMOID", new System.Collections.Generic.List<string>
+                {
+                   "FIELDOID"
+                }
+            }
+        };
+
+        // ------------------------------//
+        if (dpAction.ChangeCount > 0)
+        {
+            string strFormOID = dpAction.Record.DataPage.Form.OID.ToString();
+            bool openQuery = false;
+            if (lstAnalyte.ContainsKey(strFormOID))
+            {
+                System.Collections.Generic.List<string> lstField = lstAnalyte[strFormOID];
+
+                for (int i = 0; i < lstField.Count; i++)
+                {
+                    DataPoint dpQuery = dpAction.Record.DataPoints.FindByFieldOID(lstField[i]);
+                    openQuery = false;
+                    if (dpQuery != null)
+                    {
+                        if (dpQuery.IsRequiringClinicalSignificance)
+                        {
+
+                            if (dpQuery.ClinicalSignificance != null && dpQuery.ClinicalSignificance.Code != null)
+                            {
+                                if (string.Compare(dpQuery.ClinicalSignificance.Code.Code.ToString(), CODE) == 0 &&
+string.Compare(dpQuery.ClinicalSignificance.Comment.ToString(), string.Empty) == 0)
+                                    openQuery = true;
+                            }
+                        }
+                        CustomFunction.PerformQueryAction(QUERY_TEXT, SITE_BY_SYSTEM, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dpQuery, openQuery, afp.CheckID, afp.CheckHash);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+}
+#endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

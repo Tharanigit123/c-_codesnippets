@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getDPTime</Title>
+      <Author>Covance USER</Author>
+      <Description>Method return Valid Time from the submitted datapoint</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>getTime</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private TimeSpan getValidTimefromDataPoint(DataPoint dpTIME)
+        {
+            if (IsValidDataPointValidation(dpTIME) && dpTIME.StandardValue() is TimeSpan)
+            {
+                Object obDt = dpTIME.StandardValue();
+                if (obDt is TimeSpan)
+                    return (TimeSpan)obDt;
+                return TimeSpan.MinValue;
+            }
+            return TimeSpan.MinValue;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

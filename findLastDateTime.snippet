@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>findLastDateTime</Title>
+      <Author>Covance USER</Author>
+      <Description>Method Finds Last DateTime form the Collection of DataPoints (Only Valid DateTime) parameters DataPoints Collection and TimePoint Variable OID</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lstDateTime</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[//-----Find Latest/Last Date method
+        public DateTime FindLatestDate(DataPoints datapoints, string strTimPoint)
+        {
+            DateTime dtLASTDT = DateTime.MinValue;
+            for (int i = 0; i < datapoints.Count; i++)
+            {
+                DataPoint dpDATEPoint = (DataPoint)datapoints[i];
+                if (dpDATEPoint == null || !dpDATEPoint.Active) continue;
+                DateTime dtSTARTDT = getValidDatapointDate(dpDATEPoint, dpDATEPoint.Record.DataPoints.FindByFieldOID(strTimPoint));
+                if (dtSTARTDT != DateTime.MinValue)
+                {
+                    if (dtLASTDT == DateTime.MinValue || (dtLASTDT != DateTime.MinValue && DateTime.Compare((DateTime)dtSTARTDT, (DateTime)dtLASTDT) > 0))
+                        dtLASTDT = dtSTARTDT;
+                }
+
+            }
+            return dtLASTDT;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

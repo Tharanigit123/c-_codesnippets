@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>OpenCloseDeviation</Title>
+      <Author>Covance USER</Author>
+      <Description>Protocol Deviation Check Validation Method</Description>
+      <Shortcut>pdMethod</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private void OpenCloseDeviation(DataPoint dp, bool fireQuery)
+        {
+            string txtDeviation = "<PD Message>";
+            int deviationClass = <int>, deviationcode = <int>;
+
+            ProtocolDeviation currDeviation = null;
+            for (int j = 0; j < dp.ProtocolDeviations.Count; j++)
+            {
+                ProtocolDeviation deviation = dp.ProtocolDeviations[j];
+                if (deviation.Text == txtDeviation && deviation.Code == deviationcode && deviation.Class == deviationClass)
+                {
+                    currDeviation = dp.ProtocolDeviations[j];
+                    break;
+                }
+            }
+            if (currDeviation != null) currDeviation.Active = fireQuery;
+            else if (fireQuery) dp.AddProtocolDeviation(txtDeviation, deviationcode, deviationClass);
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

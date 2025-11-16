@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>getSortedDataPointsOnOrdinal</Title>
+      <Author>Covance USER</Author>
+      <Description>Return Sorted DataPoints based on the Ordinal</Description>
+      <Shortcut>sortDpOnOrdinal</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private DataPoints getSortedDataPointsOnOrdinal(DataPoints dpsPoints)
+        {
+            ArrayList arydpColls = new ArrayList();
+            DataPoints dptColls = new DataPoints();
+            if (dpsPoints.Count > 0)
+            {
+                foreach (DataPoint dpPoint in dpsPoints)
+                {
+                    if (dpPoint == null || !dpPoint.Active || dpPoint.ChangeCount == 0) continue;
+                        arydpColls.Add((DataPoint)dpPoint);
+                }
+            }
+            if (arydpColls.Count > 1) arydpColls.Sort(new MyDataPointComparer());
+            foreach (DataPoint dpPoint in arydpColls) dptColls.Add(dpPoint);
+            return dptColls;
+        }
+        private class MyDataPointComparer : System.Collections.IComparer
+        {
+            int System.Collections.IComparer.Compare(object x, object y)
+            {
+                int dp1 = ((DataPoint)x).Record.DataPage.Instance.Folder.Ordinal;
+                int dp2 = ((DataPoint)y).Record.DataPage.Instance.Folder.Ordinal;
+                return dp1.CompareTo(dp2);
+            }
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

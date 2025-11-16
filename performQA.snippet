@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>PerformQueryAction</Title>
+      <Author>Covance USER</Author>
+      <Description>As per the Bayer Standards PerformQueryAction need to be evaluated by Lock DataPoint changes (if isAllowChange is true or isAllowChange is false with DataPoint unlock, then open query and unlock DataPoint.)</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>perQA</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private void CallPerformQueryAction(string QUERYTEXT, int MARKING_GROUP_ID, bool ANSWER_ON_CHANGE, bool CLOSE_ON_CHANGE, DataPoint dp, bool isOpenQuery, int checkID, string checkHash)
+        {
+            if (dp != null)
+            {
+                bool isAllowChange = dp.Record.DataPage.Subject.StudySite.Study.AllowLockedDataPointChange;
+                if (isAllowChange || (!isAllowChange && dp.LockStatus != LockStatusEnum.Locked))
+                {
+                    CustomFunction.PerformQueryAction(QUERYTEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dp, isOpenQuery, checkID, checkHash);
+                    if (isOpenQuery && dp.LockStatus == LockStatusEnum.Locked)
+                        dp.Unlock();
+                }
+            }
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Bayer Eval Method</Title>
+      <Author>Covance User</Author>
+      <Description>Structure for the CF Programming with Bayer Header Informtaion</Description>
+      <HelpUrl></HelpUrl>
+      <Shortcut>bEval</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[#region BAYER_STUDYCODE_CHECKPURPOSE
+    public class BAYER_STUDYCODE_CHECKPURPOSE
+    {
+        public object Eval(object ThisObject)
+        {
+            /** HEADER INFORMATION:**************************
+             * CF Name: BAYER_STUDYCODE_CHECKPURPOSE
+             * Programmer Name: Programmer_Name@Covance.com (DD MMM YYYY)
+             * Last Modified: Not Applicable
+             * Reason Modified: Not Applicable
+             * Description: <Specify the Description here>**/
+
+            ActionFunctionParams afp = (ActionFunctionParams)ThisObject;
+            DataPoint dpSTDPoint = afp.ActionDataPoint;
+            Subject current_subject = dpSTDPoint.Record.Subject;
+
+            // ---- STUDY SPECIFIC REFERENCES CHANGED HERE ------------ //
+            const string FIELDOID = "";
+            // -------------------------------------------------------- //
+
+            // ---- OTHER CONSTANTS --------- //
+            const string QUERY_TEXT = @"<Query Message>";
+            const int SITE_BY_SYSTEM = 1;
+            const bool ANSWER_ON_CHANGE = false, CLOSE_ON_CHANGE = false;
+            bool openQuery = false;
+            // ------------------------------//		
+
+            if (dpSTDPoint.ChangeCount > 0)
+            {
+
+                CallPerformQueryAction(QUERY_TEXT, SITE_BY_SYSTEM, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dpSTDPoint, openQuery, afp.CheckID, afp.CheckHash);
+            }
+            return null;
+        }
+        private void CallPerformQueryAction(string QUERYTEXT, int MARKING_GROUP_ID, bool ANSWER_ON_CHANGE, bool CLOSE_ON_CHANGE, DataPoint dp, bool isOpenQuery, int checkID, string checkHash)
+        {
+            if (dp != null)
+            {
+                bool isAllowChange = dp.Record.DataPage.Subject.StudySite.Study.AllowLockedDataPointChange;
+                if (isAllowChange || (!isAllowChange && dp.LockStatus != LockStatusEnum.Locked))
+                {
+                    CustomFunction.PerformQueryAction(QUERYTEXT, MARKING_GROUP_ID, ANSWER_ON_CHANGE, CLOSE_ON_CHANGE, dp, isOpenQuery, checkID, checkHash);
+                    if (isOpenQuery && dp.LockStatus == LockStatusEnum.Locked)
+                        dp.Unlock();
+                }
+            }
+        }
+    }
+    #endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
